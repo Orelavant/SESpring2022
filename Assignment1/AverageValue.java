@@ -10,6 +10,7 @@ package Assignment1;
 import java.io.*;
 import java.util.ArrayList;
 
+// Class with methods used to average a column of values based off of a provided index and CSV.
 public class AverageValue {
 
     public static void main(String[] args) throws IOException {
