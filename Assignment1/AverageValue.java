@@ -13,11 +13,11 @@ import java.util.ArrayList;
 // Class with methods used to average a column of values based off of a provided index and CSV.
 public class AverageValue {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // Check for errors
         if (!inputCheck(args)) {
             System.out.println("Invalid data");
-            return;
+            System.exit(0);
         }
 
         // Set vars
@@ -29,7 +29,6 @@ public class AverageValue {
             ArrayList<Double> column = readinColumn(colIndex, fileName);
         
             // Display results
-            System.out.println(column.toString());
             System.out.println(average(column));
         } catch (IOException e) {
             System.out.println("Invalid data");
@@ -71,8 +70,7 @@ public class AverageValue {
             try {
                 column.add(Double.parseDouble(tempArr[colIndex]));
             } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) { 
-                // if missing num or out of bounds, or number can't be parsed, add 0.
-                column.add(0.0);
+                // if missing num or out of bounds, or number can't be parsed, skip.
             }
         }
         fr.close();
@@ -86,8 +84,14 @@ public class AverageValue {
         double sum = 0;
         int count = 0;
 
+        // If empty, return invalid.
+        if (numArr.isEmpty()) {
+            System.out.println("Invalid data");
+            System.exit(0);
+        }
+
         // Sum
-        for(double num : numArr) {
+        for (double num : numArr) {
             sum = sum + num;
             count ++;
         }
