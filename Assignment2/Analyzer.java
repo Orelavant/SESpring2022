@@ -172,7 +172,7 @@ public class Analyzer {
 	
 	public static void main(String[] args) {
 		// Error check. Create sentences and wordScores.
-		if (args[0] == null || args[0].isEmpty()) {
+		if (args.length < 1) {
 			System.out.println("no input file");
 			System.exit(0);
 		}
@@ -185,17 +185,19 @@ public class Analyzer {
 		}
 		Map<String, Double> wordScores =  calculateWordScores(sentences);
 
-		// Ask for input for a sentence
-		String sentence = "";
-		do {
+		while (true) {
+			// Ask for input for a sentence
 			Scanner input = new Scanner(System.in);
 			System.out.println("Enter a sentence");
-			sentence = input.nextLine();
+			String sentence = input.nextLine();
+
+			if (sentence.equals("quit")) {
+				break;
+			}
 
 			// Get sentence sentiment score
 			double sentenceSentiment = calculateSentenceScore(wordScores, sentence); 
 			System.out.println(sentenceSentiment);
-		} while (!sentence.equals("quit"));
+		}
 	}
-
 }
