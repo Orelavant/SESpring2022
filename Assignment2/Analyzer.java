@@ -171,12 +171,31 @@ public class Analyzer {
 	}
 	
 	public static void main(String[] args) {
-		/*
-		 * Implement this method in Part 4
-		 */
-		Set<Sentence> sentences = readFile("reviews.txt");
-
+		// Error check. Create sentences and wordScores.
+		if (args[0] == null || args[0].isEmpty()) {
+			System.out.println("no input file");
+			System.exit(0);
+		}
+		Set<Sentence> sentences = new HashSet<>();
+		try {
+			sentences = readFile(args[0]);
+		} catch (IllegalArgumentException e) {
+			System.out.println("bad input file");
+			System.exit(0);
+		}
 		Map<String, Double> wordScores =  calculateWordScores(sentences);
+
+		// Ask for input for a sentence
+		String sentence = "";
+		do {
+			Scanner input = new Scanner(System.in);
+			System.out.println("Enter a sentence");
+			sentence = input.nextLine();
+
+			// Get sentence sentiment score
+			double sentenceSentiment = calculateSentenceScore(wordScores, sentence); 
+			System.out.println(sentenceSentiment);
+		} while (!sentence.equals("quit"));
 	}
 
 }
