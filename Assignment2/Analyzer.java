@@ -48,8 +48,13 @@ public class Analyzer {
 				// Create text from line
 				String[] textArr = Arrays.copyOfRange(tempArr, 1, tempArr.length);
 				StringBuilder sb = new StringBuilder();
-				for (int i = 0; i < textArr.length; i++) {
+				int i = 0;
+				while (i < textArr.length-1) {
 					sb.append(textArr[i]+" ");
+					i++;
+				}
+				if (textArr.length > 0) {
+					sb.append(textArr[i]);
 				}
 				String text = sb.toString();
 
@@ -64,7 +69,7 @@ public class Analyzer {
         	}
 			fr.close();
 			br.close();
-		} catch (IOException e) {
+		} catch (IOException | NullPointerException e) {
 			throw new IllegalArgumentException();
 		}
 
