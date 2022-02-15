@@ -2,6 +2,7 @@
  * This class contains the methods used for conducting a simple sentiment analysis.
  */
 
+package assignment2;
 import java.util.*;
 import java.io.*;
 

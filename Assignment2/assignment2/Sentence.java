@@ -7,6 +7,7 @@
  * modify any of the code that is provided.
  */
 
+package assignment2;
 
 public class Sentence  {
 	
