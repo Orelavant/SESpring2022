@@ -571,7 +571,7 @@ public class DonationManagerTest {
 		Double result = new DonationManager(testFund, testUser).donate("testUser", "testFund", testAmount);
 
 		// Check if the amount donated was equal to the result (Diff is 8).
-		assertEquals(result, testAmount);
+		assertEquals(testAmount, result);
 	}
 
 	@Test
@@ -614,7 +614,7 @@ public class DonationManagerTest {
 
 		// Check if the amount donated was equal to the funding gap (Diff is 8).
 		Double fundGap = testFund.getFundTarget("testFund")-testFund.getFundBalance("testFund");
-		assertEquals(result, fundGap);
+		assertEquals(fundGap, result);
 	}
 	
 	// Normal Operation Case 2 ----------------------------------------------
@@ -653,12 +653,12 @@ public class DonationManagerTest {
 		User testUser = new User();
 		Fund testFund = new Fund();
 
-		Double testAmount = 2000.0;
+		Double testAmount = 2001.0;
 		Double result = new DonationManager(testFund, testUser).donate("testUser", "testFund", testAmount);
 
 		// Check if the result is double the amount donated.
 		Double doubleAmount = testAmount*2;
-		assertEquals(result, doubleAmount);
+		assertEquals(doubleAmount, result);
 	}
 
 	@Test
@@ -701,6 +701,92 @@ public class DonationManagerTest {
 
 		// Check if the amount donated was equal to the funding gap.
 		Double fundGap = testFund.getFundTarget("testFund")-testFund.getFundBalance("testFund");
-		assertEquals(result, fundGap);
+		assertEquals(fundGap, result);
+	}
+
+	@Test
+	public void testDonateFundTargetReached() {
+		// Define and instantiate mock objects.
+		class User implements UserManager {
+			@Override
+			public boolean isValidUser(String name) {
+				return true;
+			}
+
+			@Override
+			public double getBalance(String name) {
+				return 100000;
+			}
+		}
+
+		class Fund implements FundManager {
+			@Override
+			public boolean isValidFund(String name) {
+				return true;
+			}
+
+			@Override
+			public double getFundTarget(String name) {
+				return 100;
+			}
+
+			@Override
+			public double getFundBalance(String name) {
+				return 100;
+			}
+		}
+
+		User testUser = new User();
+		Fund testFund = new Fund();
+
+		Double testAmount = 10.0;
+		Double result = new DonationManager(testFund, testUser).donate("testUser", "testFund", testAmount);
+
+		// Check if the amount donated was equal to the funding gap.
+		Double fundGap = testFund.getFundTarget("testFund")-testFund.getFundBalance("testFund");
+		assertEquals(fundGap, result);
+	}
+
+	@Test
+	public void testDonateFundTargetExceeded() {
+		// Define and instantiate mock objects.
+		class User implements UserManager {
+			@Override
+			public boolean isValidUser(String name) {
+				return true;
+			}
+
+			@Override
+			public double getBalance(String name) {
+				return 100000;
+			}
+		}
+
+		class Fund implements FundManager {
+			@Override
+			public boolean isValidFund(String name) {
+				return true;
+			}
+
+			@Override
+			public double getFundTarget(String name) {
+				return 100;
+			}
+
+			@Override
+			public double getFundBalance(String name) {
+				return 150;
+			}
+		}
+
+		User testUser = new User();
+		Fund testFund = new Fund();
+
+		Double testAmount = 10.0;
+		Double result = new DonationManager(testFund, testUser).donate("testUser", "testFund", testAmount);
+
+		// Check if the amount donated was equal to the funding gap.
+		Double expected = 0.0;
+		assertEquals(expected, result);
 	}
 }
