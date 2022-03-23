@@ -6,7 +6,6 @@
  * without adding anything else.
  */
 
-import java.util.Set;
 import java.util.*;
 import java.net.*;
 import org.json.simple.JSONArray;
@@ -37,6 +36,8 @@ public class Client {
 	}
 
 	public Set<Person> get(String[] ids) {
+		// Result set
+		Set<Person> personSet = new HashSet<>();
 
 		try {
 			// Generate URL 
@@ -60,6 +61,9 @@ public class Client {
 	
 		    // now the response comes back
 		    int responsecode = conn.getResponseCode();
+
+			// close connection
+			conn.disconnect();
 		    
 		    // make sure the response has "200 OK" as the status
 		    if (responsecode != 200) {
@@ -81,17 +85,17 @@ public class Client {
 				    // then, parse the data and create a JSON Array for it
 				    JSONArray data = (JSONArray) parser.parse(line);
 
-				    System.out.println(data.toString());
+					// For each person in response, create person class
+					for (Object preperson : data) {
+						JSONObject person = (JSONObject) preperson;
+						personSet.add(new Person( (String) person.get("id"), (String) person.get("status")));
+					}
 				}
 		    }
-			Set<Person> test = new HashSet<>();
-			return test;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 		    e.printStackTrace();
-			Set<Person> test = new HashSet<>();
-			return test;
 		}
+		System.out.println(personSet.toString());
+		return personSet;
 	}
-
 }
